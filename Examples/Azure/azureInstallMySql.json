@@ -78,14 +78,14 @@
             "metadata": {
                 "description": "DSC configuration function to call"
             }
-        }
+        },
         "MySQLInstancePackagePath": {
             "type": "string",
             "defaultValue": "http://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-community-5.6.17.0.msi",
             "metadata": {
                 "description": "The url to the mySql msi."
             }
-        }
+        },
         "MySQLInstancePackageName": {
             "type": "string",
             "defaultValue": "MySQL Installer",
@@ -93,7 +93,6 @@
                 "description": "The name of the mySql msi."
             }
         }
-        
     },
     "variables": {
         "virtualNetworkName": "dscVNET",
