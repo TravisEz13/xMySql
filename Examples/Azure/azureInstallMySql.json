@@ -78,7 +78,7 @@
         },
         "configurationFunction": {
             "type": "string",
-            "defaultValue": "Sample_InstallMySqlDefault.ps1\\SQLInstanceInstallationConfiguration",
+            "defaultValue": "Sample_InstallMySql_Default.ps1\\SQLInstanceInstallationConfiguration",
             "metadata": {
                 "description": "DSC configuration function to call"
             }
@@ -95,6 +95,13 @@
             "defaultValue": "MySQL Installer",
             "metadata": {
                 "description": "The name of the mySql msi."
+            }
+        },
+        "DscExtensionVersion": {
+            "type": "string",
+            "defaultValue": "1.10",
+            "metadata": {
+                "description": "The dsc extension version.  Only accepts <major>.<minor> or <major>.*"
             }
         }
     },
@@ -220,7 +227,7 @@
         "properties": {
             "publisher": "Microsoft.Powershell",
             "type": "DSC",
-            "typeHandlerVersion": "1.9",
+            "typeHandlerVersion": "[parameters('DscExtensionVersion')]",
             "settings": {
                 "ModulesUrl": "[parameters('modulesUrl')]",
                 "SasToken": "",
