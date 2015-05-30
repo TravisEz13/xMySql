@@ -4,6 +4,7 @@
     "parameters": {
         "location": {
             "type": "string",
+            "defaultValue": "West US",
             "allowedValues": [
                 "West US",
                 "East US",
@@ -17,6 +18,7 @@
         },
         "newStorageAccountName": {
             "type": "string",
+            "defaultValue": "dscresourcekitdemo",
             "metadata": {
                 "description": "Storage Account Name"
             }
