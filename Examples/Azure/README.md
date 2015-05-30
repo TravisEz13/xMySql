@@ -1,6 +1,8 @@
 # Very Simple DSC Deployment Example
 
-[![Deploy To Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FTravisEz13%2FxMySql%2FAzureResourceManagerExamples%2FExamples%2FAzure%2FazureInstallMySql.json)
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FTravisEz13%2FxMySql%2FAzureResourceManagerExamples%2FExamples%2FAzure%2FazureInstallMySql.json">
+<img src="http://azuredeploy.net/deploybutton.png" />
+</a>
 
 This is a very simple test repo for a DSC configuration example
 
