@@ -1,6 +1,6 @@
 # Very Simple DSC Deployment Example
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FTravisEz13%2FxMySql%2FAzureResourceManagerExamples%2FExamples%2FAzure%2FazureInstallMySql.json">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FTravisEz13%2FxMySql%2FAzureResourceManagerExamples%2FExamples%2FAzure%2FazureInstallMySql.json" target="_blank">
 <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
 
