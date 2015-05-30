@@ -18,41 +18,42 @@ configuration xMySqlProvision
         [Parameter(Mandatory = $true)]
         [PSCredential] $UserCredential
     )
+        Import-dscresource -module xMySql
         # Make sure the mySqlServer installer package is present
         Package mySqlInstaller
         {
                     
             Path      = $DownloadURI
-            ProductId = "{437AC169-780B-47A9-86F6-14D43C8F596B}"
-            Name      = "MySQL Installer"
+            ProductId = '{437AC169-780B-47A9-86F6-14D43C8F596B}'
+            Name      = 'MySQL Installer'
         }
 
         # Make sure the mySqlServer exists with the correct root credential
         xMySqlServer mySQLServer
         {
            ServiceName          = $ServiceName
-           Ensure               = "Present"
+           Ensure               = 'Present'
            RootPassword         = $RootCredential
-           DependsOn            = "[Package]mySqlInstaller"
+           DependsOn            = '[Package]mySqlInstaller'
         }
 
         # Make sure the MySql WordPress database exists
         xMySqlDatabase mySQLDatabase
         {
-           Ensure               = "Present"
+           Ensure               = 'Present'
            Name                 = $DatabaseName
            ConnectionCredential = $RootCredential
-           DependsOn            = "[xMySqlServer]mySQLServer"
+           DependsOn            = '[xMySqlServer]mySQLServer'
         }
 
         # Make sure the MySql WordPress user exists
         xMySqlUser mySQLUser
         {
             Name                 = $UserCredential.UserName
-            Ensure               = "Present"
+            Ensure               = 'Present'
             Credential           = $UserCredential
             ConnectionCredential = $RootCredential
-            DependsOn            = "[xMySqlDatabase]mySQLDatabase"
+            DependsOn            = '[xMySqlDatabase]mySQLDatabase'
         }
 
         # Make sure the MySql WordPress user has access to tho WordPress database
@@ -60,9 +61,9 @@ configuration xMySqlProvision
         {
             UserName             = $UserCredential.UserName
             DatabaseName         = $DatabaseName
-            Ensure               = "Present"               
+            Ensure               = 'Present'               
             ConnectionCredential = $RootCredential
-            DependsOn            = "[xMySqlUser]mySQLUser"
+            DependsOn            = '[xMySqlUser]mySQLUser'
         }
 }
 

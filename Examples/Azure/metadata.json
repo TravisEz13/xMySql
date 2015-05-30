@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "MySql using DSC extension on a Windows VM",
+  "description": "This template creates a Windows VM and sets up MySql server using the DSC extension.",
+  "summary": "This template creates a Windows VM and sets up MySql server using the DSC extension. ",
+  "githubUsername": "TravisEz13",
+  "dateUpdated": "2015-05-30"
+}
