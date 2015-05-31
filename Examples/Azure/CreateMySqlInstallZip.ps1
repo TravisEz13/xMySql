@@ -16,7 +16,7 @@ if(!(test-path $zipfolder))
 }
 
 # clone and copy files to temp folders
-git clone https://github.com/PowerShell/xPSDesiredStateConfiguration.git "$tempFolder\xPsDesiredStateConfiguration"
+git clone https://github.com/PowerShell/xPSDesiredStateConfiguration.git "$tempFolder\xPsDesiredStateConfiguration" 2> $null
 Remove-Item -Recurse -Force "$tempFolder\xPsDesiredStateConfiguration\.git"
 copy-item $xMySqlFolder "$tempFolder\xMySql" -recurse
 Remove-Item -Recurse -Force "$tempFolder\xMySql\.git"
