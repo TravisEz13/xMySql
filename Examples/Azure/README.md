@@ -1,5 +1,7 @@
-# Very Simple DSC Deployment Example
+# MySql Installation - DSC Deployment Example
 
+<!-- as of 5/2015 GitHub Flavored Markdown does not allow the target attribute, 
+     using the workaround of directly using HTML -->
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FTravisEz13%2FxMySql%2FAzureResourceManagerExamples%2FExamples%2FAzure%2FazureInstallMySql.json" target="_blank">
 <img src="http://azuredeploy.net/deploybutton.png" />
 </a>
