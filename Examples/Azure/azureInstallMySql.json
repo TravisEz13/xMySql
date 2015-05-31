@@ -97,9 +97,9 @@
         "imagePublisher": "MicrosoftWindowsServer",
         "imageOffer": "WindowsServer",
         "vmExtensionName": "dscExtension",
-        "resourceGroupNameLower": "[resourceGroup().name]",
+        "resourceGroupName": "[resourceGroup().name]",
         "resourceGroupLocation": "[resourceGroup().location]",
-        "storageAccountName" : "[concat(variables('resourceGroupNameLower'),'stg')]",
+        "storageAccountName" : "[concat(toLower(variables('resourceGroupName')),'stg')]",
         "apiVersion" : "2015-05-01-preview"
     },
     "resources": [{
