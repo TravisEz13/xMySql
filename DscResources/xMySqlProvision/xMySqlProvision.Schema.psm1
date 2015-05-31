@@ -18,7 +18,7 @@ configuration xMySqlProvision
         [Parameter(Mandatory = $true)]
         [PSCredential] $UserCredential
     )
-        Import-dscresource -module xMySql
+        #Import-dscresource -module xMySql
         # Make sure the mySqlServer installer package is present
         Package mySqlInstaller
         {
