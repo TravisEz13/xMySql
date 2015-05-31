@@ -16,13 +16,6 @@
                 "description": "Location of resources"
             }
         },
-        "newStorageAccountName": {
-            "type": "string",
-            "defaultValue": "dscresourcekitdemo",
-            "metadata": {
-                "description": "Storage Account Name"
-            }
-        },
         "storageAccountType": {
             "type": "string",
             "defaultValue": "Standard_LRS",
@@ -118,17 +111,19 @@
         "imagePublisher": "MicrosoftWindowsServer",
         "imageOffer": "WindowsServer",
         "vmExtensionName": "dscExtension"
+        "resourceGroupNameLower": "[resourceGroup().name.ToLower()]"
+        "apiVersion" : "2015-05-01-preview"
     },
     "resources": [{
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[parameters('newStorageAccountName')]",
-        "apiVersion": "2015-05-01-preview",
+        "name": "[concat(variables('resourceGroupNameLower'),'stg')]",
+        "apiVersion": "[variables('apiVersion')]",
         "location": "[parameters('location')]",
         "properties": {
             "accountType": "[parameters('storageAccountType')]"
         }
     }, {
-        "apiVersion": "2015-05-01-preview",
+        "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/publicIPAddresses",
         "name": "[variables('publicIPAddressName')]",
         "location": "[parameters('location')]",
@@ -136,7 +131,7 @@
             "publicIPAllocationMethod": "[variables('publicIPAddressType')]"
         }
     }, {
-        "apiVersion": "2015-05-01-preview",
+        "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/virtualNetworks",
         "name": "[variables('virtualNetworkName')]",
         "location": "[parameters('location')]",
@@ -154,7 +149,7 @@
             }]
         }
     }, {
-        "apiVersion": "2015-05-01-preview",
+        "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Network/networkInterfaces",
         "name": "[variables('nicName')]",
         "location": "[parameters('location')]",
@@ -177,7 +172,7 @@
             }]
         }
     }, {
-        "apiVersion": "2015-05-01-preview",
+        "apiVersion": "[variables('apiVersion')]",
         "type": "Microsoft.Compute/virtualMachines",
         "name": "[parameters('vmName')]",
         "location": "[parameters('location')]",
@@ -219,7 +214,7 @@
     }, {
         "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "[concat(parameters('vmName'),'/', variables('vmExtensionName'))]",
-        "apiVersion": "2015-05-01-preview",
+        "apiVersion": "[variables('apiVersion')]",
         "location": "[parameters('location')]",
         "dependsOn": [
             "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
