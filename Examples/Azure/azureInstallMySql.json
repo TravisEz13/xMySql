@@ -71,7 +71,7 @@
         },
         "modulesUrl": {
             "type": "string",
-            "defaultValue": "https://github.com/TravisEz13/xMySql/blob/AzureResourceManagerExamples/Examples/Sample_InstallMySQL_Default.ps1.zip?raw=true",
+            "defaultValue": "https://ci.appveyor.com/api/buildjobs/9j77p4dr5cx2xg1n/artifacts/Sample_InstallMySQL_Default.ps1.zip",
             "metadata": {
                 "description": "URL for the DSC configuration module. NOTE: Can be a Github url(raw) to the zip file"
             }
