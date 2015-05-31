@@ -98,7 +98,7 @@
         "imageOffer": "WindowsServer",
         "vmExtensionName": "dscExtension",
         "resourceGroupNameLower": "[resourceGroup().name]",
-        "resourceGroupLocation": "[resourceGroup().location.ToLower()]",
+        "resourceGroupLocation": "[resourceGroup().location]",
         "storageAccountName" : "[concat(variables('resourceGroupNameLower'),'stg')]",
         "apiVersion" : "2015-05-01-preview"
     },
