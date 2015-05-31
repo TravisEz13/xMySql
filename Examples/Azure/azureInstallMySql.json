@@ -110,8 +110,8 @@
         "nicName": "dscNIC",
         "imagePublisher": "MicrosoftWindowsServer",
         "imageOffer": "WindowsServer",
-        "vmExtensionName": "dscExtension"
-        "resourceGroupNameLower": "[resourceGroup().name.ToLower()]"
+        "vmExtensionName": "dscExtension",
+        "resourceGroupNameLower": "[resourceGroup().name.ToLower()]",
         "apiVersion" : "2015-05-01-preview"
     },
     "resources": [{
