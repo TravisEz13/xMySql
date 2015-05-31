@@ -98,12 +98,13 @@
         "imageOffer": "WindowsServer",
         "vmExtensionName": "dscExtension",
         "resourceGroupNameLower": "[resourceGroup().name]",
-        "resourceGroupLocation": "[resourceGroup().location]",
+        "resourceGroupLocation": "[resourceGroup().location.ToLower()]",
+        "storageAccountName" : "[concat(variables('resourceGroupNameLower'),'stg')]",
         "apiVersion" : "2015-05-01-preview"
     },
     "resources": [{
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[concat(variables('resourceGroupNameLower'),'stg')]",
+        "name": "[variables('storageAccountName')]",
         "apiVersion": "[variables('apiVersion')]",
         "location": "[variables('resourceGroupLocation')]",
         "properties": {
@@ -164,7 +165,7 @@
         "name": "[parameters('vmName')]",
         "location": "[variables('resourceGroupLocation')]",
         "dependsOn": [
-            "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+            "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
             "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
         ],
         "properties": {
@@ -186,7 +187,7 @@
                 "osDisk": {
                     "name": "osdisk",
                     "vhd": {
-                        "uri": "[concat('http://',parameters('newStorageAccountName'),'.blob.core.windows.net/vhds/','osdisk.vhd')]"
+                        "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/vhds/','osdisk.vhd')]"
                     },
                     "caching": "ReadWrite",
                     "createOption": "FromImage"
