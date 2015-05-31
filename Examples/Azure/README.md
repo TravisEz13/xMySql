@@ -10,8 +10,11 @@ This is a very simple test repo for a DSC configuration example
 
 To test this configuration:
 
-    From Git Shell
-    git clone -branch AzureResourceManagerExamples https://github.com/TravisEz13/xMySql.git
-    
-    From Azure PowerShell
-    New-AzureResourceGroup -TemplateFile .\azureInstallMySql.json -TemplateParameterFile .\azureInstallMySql.parameters.json -Name TestDSC -Location WestUS -locationFromTemplate 'West US'
+From Git Shell
+'''
+git clone -branch AzureResourceManagerExamples https://github.com/TravisEz13/xMySql.git
+'''    
+From Azure PowerShell
+'''
+New-AzureResourceGroup -TemplateFile .\azureInstallMySql.json -TemplateParameterFile .\azureInstallMySql.parameters.json -Name TestDSC -Location WestUS -locationFromTemplate 'West US'
+'''
