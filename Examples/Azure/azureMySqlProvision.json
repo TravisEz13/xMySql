@@ -242,8 +242,10 @@
             },
             "protectedSettings": {
                     "DataBlobUri": "https://raw.githubusercontent.com/TravisEz13/xMySql/AzureResourceManagerExamples/Examples/nodedata.psd1",
-                    "RootCredential": "[parameters('MySQLRootPassword')]",
-                    "UserCredential": "[parameters('MySQLUserPassword')]"
+                    "Items" : {
+                        "RootCredential": "[parameters('MySQLRootPassword')]",
+                        "UserCredential": "[parameters('MySQLUserPassword')]"                       
+                    }
             }
         }
     }]
