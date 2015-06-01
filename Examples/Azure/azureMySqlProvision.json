@@ -50,7 +50,7 @@
         },
         "modulesUrl": {
             "type": "string",
-            "defaultValue": "https://ci.appveyor.com/api/buildjobs/9j77p4dr5cx2xg1n/artifacts/Sample_InstallMySQL_Default.ps1.zip",
+            "defaultValue": "https://ci.appveyor.com/api/buildjobs/ps7sjrp4mk6t8dfa/artifacts/Sample_MySQL_Provision.ps1.zip",
             "metadata": {
                 "description": "URL for the DSC configuration module. NOTE: Can be a Github url(raw) to the zip file"
             }
@@ -229,20 +229,22 @@
                 "ConfigurationFunction": "[parameters('configurationFunction')]",
                 "Properties": {
                     "MySQLInstancePackagePath": "[parameters('MySQLInstancePackagePath')]",
-                    "MySQLInstancePackageName": "[parameters('MySQLInstancePackageName')]"
-                }
-            },
-            "protectedSettings": {
-                "DataBlobUri": "https://raw.githubusercontent.com/TravisEz13/xMySql/AzureResourceManagerExamples/Examples/nodedata.psd1",
-                "RootCredential": {
-                    "UserName": "administrator",
-                    "Password": "[parameters('MySQLRootPassword')]"
-                },
-                "UserCredential": {
-                    "UserName": "administrator",
-                    "Password": "[parameters('MySQLUserPassword')]"
+                    "MySQLInstancePackageName": "[parameters('MySQLInstancePackageName')]",
+                    "RootCredential" : { 
+                        "UserName":"administrator",
+                        "Password":"PrivateSettingsRef:RootCredential"
+                    },
+                    "UserCredential" : { 
+                        "UserName":"wordpress",
+                        "Password":"PrivateSettingsRef:UserCredential"
+                    }
                 }
             }
+        },
+        "protectedSettings": {
+                "DataBlobUri": "https://raw.githubusercontent.com/TravisEz13/xMySql/AzureResourceManagerExamples/Examples/nodedata.psd1",
+                "RootCredential": "[parameters('MySQLRootPassword')]",
+                "UserCredential": "[parameters('MySQLUserPassword')]"
         }
     }]
 }
