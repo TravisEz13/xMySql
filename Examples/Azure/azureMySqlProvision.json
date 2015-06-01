@@ -57,7 +57,7 @@
         },
         "configurationFunction": {
             "type": "string",
-            "defaultValue": "Sample_InstallMySql_Default.ps1\\SQLInstanceInstallationConfiguration",
+            "defaultValue": "Sample_MySql_Provision.ps1\\SQLInstanceInstallationConfiguration",
             "metadata": {
                 "description": "DSC configuration function to call"
             }
@@ -245,6 +245,6 @@
                     "RootCredential": "[parameters('MySQLRootPassword')]",
                     "UserCredential": "[parameters('MySQLUserPassword')]"
             }
-        },
+        }
     }]
 }
