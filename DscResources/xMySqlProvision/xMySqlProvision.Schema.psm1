@@ -18,7 +18,6 @@ configuration xMySqlProvision
         [Parameter(Mandatory = $true)]
         [PSCredential] $UserCredential
     )
-        #Import-dscresource -module xMySql
         # Make sure the mySqlServer installer package is present
         Package mySqlInstaller
         {
@@ -37,7 +36,7 @@ configuration xMySqlProvision
            DependsOn            = '[Package]mySqlInstaller'
         }
 
-        # Make sure the MySql WordPress database exists
+        # Make sure the MySql database instance exists
         xMySqlDatabase mySQLDatabase
         {
            Ensure               = 'Present'
@@ -46,7 +45,7 @@ configuration xMySqlProvision
            DependsOn            = '[xMySqlServer]mySQLServer'
         }
 
-        # Make sure the MySql WordPress user exists
+        # Make sure the MySql user exists
         xMySqlUser mySQLUser
         {
             Name                 = $UserCredential.UserName
@@ -56,7 +55,7 @@ configuration xMySqlProvision
             DependsOn            = '[xMySqlDatabase]mySQLDatabase'
         }
 
-        # Make sure the MySql WordPress user has access to tho WordPress database
+        # Make sure the MySql user has access to the database instance
         xMySqlGrant mySQLGrant
         {
             UserName             = $UserCredential.UserName
