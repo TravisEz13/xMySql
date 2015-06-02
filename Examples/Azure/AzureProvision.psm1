@@ -78,3 +78,8 @@ Param(
     $vm|Update-AzureVM
     Write-Verbose -Message 'Done!' -Verbose
 }
+
+function Get-AzureDemoVm
+{
+    return Get-AzureVm | Where-Object{$_.Name -like 'tplunk*'} | Out-GridView -Title 'Select VM' -OutputMode Single
+}
