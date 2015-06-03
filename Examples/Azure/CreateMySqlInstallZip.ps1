@@ -36,4 +36,5 @@ if((Get-Command -Name Push-AppveyorArtifact -ErrorAction SilentlyContinue))
 else
 {
   Write-Verbose -message "Not running in appveyor, zipfile is at:  $zipfile" -verbose
+  return $zipFile
 }

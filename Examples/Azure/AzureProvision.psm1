@@ -53,12 +53,25 @@ Param(
     $vm,
     [Parameter(Mandatory=$true)]
     [string]
-    $password
+    $password,
+
+    [ValidateSet('Provision','Install')]
+    $configuration
+
 
     )    
 
     Write-Verbose -Message 'Creating Zip ....' -Verbose
-    $zip = &$PSScriptRoot\CreateMySqlProvisionZip.ps1 -xMySqlFolder ((Resolve-Path $PSScriptRoot\..\..).ProviderPath)
+    if($configuration -ieq 'Provision')
+    {
+        $zip = &$PSScriptRoot\CreateMySqlProvisionZip.ps1 -xMySqlFolder ((Resolve-Path $PSScriptRoot\..\..).ProviderPath)
+    }
+    else
+    {
+        $zip = &$PSScriptRoot\CreateMySqlInstallZip.ps1 -xMySqlFolder ((Resolve-Path $PSScriptRoot\..\..).ProviderPath)
+    }
+
+    $zipName = split-path -Leaf $zip
     Write-Verbose -Message 'Publishing Zip ....' -Verbose
     Publish-AzureVMDscConfiguration -ConfigurationPath $zip -Force  -Verbose
 
@@ -66,14 +79,25 @@ Param(
     $administrator = New-Object System.Management.Automation.PSCredential 'administrator',$securePassword
     $user = New-Object System.Management.Automation.PSCredential 'mysqlUser',$securePassword
 
-
-    Write-Verbose -Message 'Setting Extension ....' -Verbose
-    $vm | Set-AzureVMDscExtension -ConfigurationDataPath "$PSScriptRoot\..\nodedata.psd1" -ConfigurationArgument @{
+    $ConfigurationArguments = @{
         MySQLInstancePackagePath = 'http://dev.mysql.com/get/Downloads/MySQLInstaller/mysql-installer-community-5.6.17.0.msi'
         MySQLInstancePackageName = 'MySQL Installer'
         RootCredential = $administrator
-        UserCredential = $user
-    } -ConfigurationName 'SQLInstanceInstallationConfiguration' -ConfigurationArchive 'Sample_MySQL_Provision.ps1.zip' -Verbose
+        
+    }
+    if($configuration -ieq 'Provision')
+    {
+        $ConfigurationArguments.Add('UserCredential', $user)
+    }
+
+    $port = $vm |Get-AzureEndpoint -Name MySql
+    if(!$port)
+    {
+        Add-AzureEndpoint -LocalPort 3306 -PublicPort 3306 -Name MySql -Protocol tcp -VM $vm
+    }
+
+    Write-Verbose -Message 'Setting Extension ....' -Verbose
+    $vm | Set-AzureVMDscExtension -ConfigurationDataPath "$PSScriptRoot\..\nodedata.psd1" -ConfigurationArgument $configurationArguments -ConfigurationName 'SQLInstanceInstallationConfiguration' -ConfigurationArchive $zipName -Verbose
     Write-Verbose -Message 'Updating VM ....' -Verbose
     $vm|Update-AzureVM
     Write-Verbose -Message 'Done!' -Verbose
@@ -82,4 +106,68 @@ Param(
 function Get-AzureDemoVm
 {
     return Get-AzureVm | Where-Object{$_.Name -like 'tplunk*'} | Out-GridView -Title 'Select VM' -OutputMode Single
+}
+
+<#
+.Synopsis
+    Installs the WinRM certification of the given VM to the local store
+#>
+function Install-AzureVMWinRMCertificate
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true, Position=1)]
+        [Microsoft.WindowsAzure.Commands.ServiceManagement.Model.PersistentVMRoleContext] $VM
+    )
+
+    $certificateFile = $null
+
+    try 
+    {
+        $thumbprint = $VM.VM.DefaultWinRmCertificateThumbprint
+
+        if (Get-ChildItem Cert:\LocalMachine\Root\$thumbprint -ErrorAction Ignore)
+        {
+            Write-Verbose "Certificate $thumbprint is already installed."
+            return
+        }
+
+        $certificate = Get-AzureCertificate -ServiceName $VM.ServiceName -Thumbprint $thumbprint -ThumbprintAlgorithm sha1
+
+        $certificateFile = [IO.Path]::GetTempFileName()
+        $certificate.Data | Out-File $certificateFile
+
+        $location = 'Cert:\LocalMachine\Root'
+
+        Write-Verbose "Installing certificate $thumbprint to $location..."
+
+        Import-Certificate -FilePath $certificateFile -CertStoreLocation $location
+    }
+    finally
+    {
+        if ($certificateFile)
+        {
+            Remove-Item -Force $certificateFile -ErrorAction Ignore
+        }
+    }
+}
+
+<#
+.Synopsis
+    Creates a PS remoting session to the given VM
+#>
+function New-AzureVMPSSession
+{
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true, Position=1)]
+            [Microsoft.WindowsAzure.Commands.ServiceManagement.Model.PersistentVMRoleContext] $VM,
+
+        [Parameter(Mandatory=$true, Position=2)]
+            [System.Management.Automation.PSCredential] $Credential
+    )
+
+    $connectionUri = Get-AzureWinRMUri -Name $vm.Name -ServiceName $vm.ServiceName
+
+    New-PSSession -ConnectionUri $connectionUri -Credential $Credential
 }

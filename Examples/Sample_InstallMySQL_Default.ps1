@@ -9,7 +9,11 @@ configuration SQLInstanceInstallationConfiguration
 
         [parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String] $MySQLInstancePackageName
+        [String] $MySQLInstancePackageName,
+
+        [parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [PSCredential] $RootCredential
     )
     
     Import-DscResource -Module xMySql, xPSDesiredStateConfiguration
@@ -28,19 +32,11 @@ configuration SQLInstanceInstallationConfiguration
         
         xMySqlServer MySQLInstance
         {
-            Ensure = "Present"
-            RootPassword = $global:cred
-            ServiceName = "MySQLServerInstanceName"
-            DependsOn = "[xPackage]mySqlInstaller"
+            Ensure = 'Present'
+            RootPassword = $RootCredential
+            ServiceName = 'MySQLServerInstanceName'
+            DependsOn = '[xPackage]mySqlInstaller'
         }
     }
 }
-
-<# 
-Sample use (parameter values need to be changed according to your scenario):
-#>
-
-$global:pwd = ConvertTo-SecureString "pass@word1" -AsPlainText -Force
-$global:usrName = "administrator"
-$global:cred = New-Object -TypeName System.Management.Automation.PSCredential ($global:usrName,$global:pwd)
 
