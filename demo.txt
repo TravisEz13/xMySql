@@ -12,6 +12,14 @@ powershell_ise.exe .\DscResources\xMySqlProvision\xMySqlProvision.Schema.psm1
 # Composite resource.
 powershell_ise.exe .\Examples\Sample_MySQL_Provision.ps1
 
+# Let's move on to an example of  the 
+# Composite resource Configuration Data.
+powershell_ise.exe .\examples\nodedata.psd1
+
+# Let's look at the code to execute this
+# on an Azure VM
+powershell_ise.exe .\Examples\Azure\AzureProvision.psm1
+
 # Get the existing VM for the demo
 $vm = Get-AzureDemoVm 
 
