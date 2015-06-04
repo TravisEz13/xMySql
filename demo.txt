@@ -1,7 +1,5 @@
 # Setup Demo 
 import-module .\Examples\Azure\AzureProvision.psm1 -Force 
-# List the resources
-Get-ChildItem .\DscResources
 
 # Get the existing VM for the demo
 $vm = Get-AzureDemoVm 
@@ -9,8 +7,10 @@ $vm = Get-AzureDemoVm
 # Update the vm with the DSC Configuration
 Update-AzureDemoMySqlVm -vm $vm -password 'Pa$$word'
 
-# Get the status of the configuration on the VM
-Get-AzureVMDscExtensionStatus -VM $vm
+
+# Wait for the azure vm dsc extension
+$startingTime = Get-Date
+Wait-AzureVmDscExtension -vm $vm -startingTime $startingTime
 
 # Install the certificate to connect to the machine
 Install-AzureVMWinRMCertificate -VM $vm

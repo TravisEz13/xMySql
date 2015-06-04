@@ -10,17 +10,19 @@ Param(
     $password,
 
     [ValidateSet('Provision','Install')]
-    $configuration
+    $configuration = 'Provision'
 
 
     )    
 
     # Create Zip
+    Write-Verbose -Message '**************************' -Verbose
     Write-Verbose -Message 'Creating Zip ....' -Verbose
     $zip = New-ConfigurationZip -Configuration $configuration
     $zipName = split-path -Leaf $zip
 
     # Publish Zip
+    Write-Verbose -Message '**************************' -Verbose
     Write-Verbose -Message 'Publishing Zip ....' -Verbose
     Publish-AzureVMDscConfiguration -ConfigurationPath $zip -Force  -Verbose
 
@@ -48,6 +50,7 @@ Param(
     }
 
     # Set Extension
+    Write-Verbose -Message '**************************' -Verbose
     Write-Verbose -Message 'Setting Extension ....' -Verbose
     $vm | Set-AzureVMDscExtension `
          -ConfigurationDataPath "$PSScriptRoot\..\nodedata.psd1"`
@@ -56,10 +59,42 @@ Param(
          -ConfigurationArchive $zipName -Verbose
 
     # Update VM
+    Write-Verbose -Message '**************************' -Verbose
     Write-Verbose -Message 'Updating VM ....' -Verbose
     $vm|Update-AzureVM
 
     Write-Verbose -Message 'Done!' -Verbose
+}
+
+function Wait-AzureVmDscExtension
+{
+[cmdletbinding()]
+Param(
+    [Parameter(Mandatory=$true)]
+    [Microsoft.WindowsAzure.Commands.ServiceManagement.Model.PersistentVMRoleListContext]
+    $vm,
+    [DateTime] $startingTime = [datetime]::MinValue
+    )
+    $extensionDoneStatusCodes = @( 1,7,8)
+    $status = $null
+    while (-not $status -or $status.StatusCode -notin $extensionDoneStatusCodes -or $status.TimeStamp -lt $startingTime )
+    { 
+        $status = Get-AzureVMDscExtensionStatus -VM $vm
+        if($status.StatusCode -notin $extensionDoneStatusCodes -or $status.TimeStamp -lt $startingTime )
+        {
+            if($status.TimeStamp -lt $startingTime)
+            {
+                Write-Verbose -Verbose "Status is stale, Refreshing..."
+            }
+            else
+            {
+                Write-Verbose -Verbose "Refreshing Status: $($Status.StatusCode) - $($Status.StatusMessage)"
+            }
+            Start-Sleep -Seconds 45
+        }
+    }
+    
+    return $status
 }
 
 Function New-AzureDemoVm
@@ -199,3 +234,4 @@ function New-ConfigurationZip
     }
     return $zip
 }
+
