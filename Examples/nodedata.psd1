@@ -5,7 +5,7 @@
 
             @{
             NodeName          = "localhost"           
-            PSDscAllowPlainTextPassword = $true;
+            #PSDscAllowPlainTextPassword = $true;
                               
             };        
     );
