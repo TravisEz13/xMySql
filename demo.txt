@@ -1,22 +1,22 @@
 # Setup Demo 
-import-module .\Examples\Azure\AzureProvision.psm1 -Force 
+import-module .\Examples\Azure\AzureProvision.psm1 -Force -scope global
+$startingTime = Get-Date
 
 # Get the existing VM for the demo
-$vm = Get-AzureDemoVm 
+$global:vm = Get-AzureDemoVm 
 
 # Update the vm with the DSC Configuration
-Update-AzureDemoMySqlVm -vm $vm -password 'Pa$$word'
+Update-AzureDemoMySqlVm -vm $global:vm -password 'Pa$$word'
 
 
 # Wait for the azure vm dsc extension
-$startingTime = Get-Date
-Wait-AzureVmDscExtension -vm $vm -startingTime $startingTime
+Wait-AzureVmDscExtension -vm $global:vm -startingTime $startingTime
 
 # Install the certificate to connect to the machine
-Install-AzureVMWinRMCertificate -VM $vm
+Install-AzureVMWinRMCertificate -VM $global:vm
 
 # Connect to the Azure machine
-$session = New-AzureVMPSSession -VM $vm -Credential (Get-Credential -UserName "$($vm.Name)\" -Message 'enter vm password')
+$session = New-AzureVMPSSession -VM $global:vm -Credential (Get-Credential -UserName "$($global:vm.Name)\" -Message 'enter vm password')
 
 # List the database
 Invoke-Command -Session $session -ScriptBlock { &'C:\Program Files\MySQL\MySQL Server 5.6\bin\mysql.exe' -e 'show databases' --user=root '--password=Pa$$word' }

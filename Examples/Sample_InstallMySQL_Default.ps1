@@ -26,7 +26,7 @@ configuration SQLInstanceInstallationConfiguration
         {
                     
             Path = $MySQLInstancePackagePath
-            ProductId = $Node.PackageProductID 
+            ProductId = '{437AC169-780B-47A9-86F6-14D43C8F596B}'
             Name = $MySQLInstancePackageName
         }
         
